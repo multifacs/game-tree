@@ -20,6 +20,7 @@ add_executable(
   main
   main.cpp
   gametree.h
+  gametree.cpp
 )
 target_link_libraries(
   main
