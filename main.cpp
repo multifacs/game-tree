@@ -2,18 +2,18 @@
 
 #include "gametree.h"
 
-TEST(GameTree, CREATE_TREE) {
+TEST(GameTree, DISABLED_CREATE_TREE) {
   treeNode* gameTree = nullptr;
   ASSERT_NO_THROW(gameTree = new treeNode());
   ASSERT_EQ(gameTree->go, 0);
 }
 
-TEST(GameTree, GENERATE) {
+TEST(GameTree, DISABLED_GENERATE) {
   treeNode* gameTree = new treeNode();
   // ASSERT_NO_THROW(gameTree->generate(5));
 }
 
-TEST(GameTree, WIN) {
+TEST(GameTree, DISABLED_WIN) {
   treeNode* gameTree = new treeNode();
   gameTree->state[1] = 1;
   gameTree->go = 1;
@@ -54,8 +54,43 @@ TEST(GameTree, WIN) {
   // cout << game5->win;
 }
 
-TEST(GameTree, GENERATE_ZERO) {
+TEST(GameTree, DISABLED_GENERATE_ZERO) {
   treeNode* gameTree = new treeNode();
   gameTree->generate(18);
   gameTree->printChildren(6);
+}
+
+TEST(GameTree, GAME) {
+
+  std::cout << "Choose side 1 or 2:\n";
+  int side;
+  std::cin >> side;
+  if (side != 1 && side != 2) return;
+
+  treeNode* gameTree = startGame(side);
+  gameTree->print();
+
+  while (true) {
+    int pos = 0;
+    std::cout << "Enter move pos:\n";
+    std::cin >> pos;
+    if (gameTree->state[pos]) continue;
+    gameTree = gameTree->makeMove(pos);
+    gameTree->print();
+    std::cout << "\n";
+
+    if (gameTree->win) {
+      std::cout << "You won!\n";
+      break;
+    }
+
+    gameTree = gameTree->makeMovePC();
+    gameTree->print();
+    std::cout << "\n";
+
+    if (gameTree->win) {
+      std::cout << "You lost!\n";
+      break;
+    }
+  }
 }

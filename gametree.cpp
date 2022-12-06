@@ -1,7 +1,14 @@
 #include "gametree.h"
 
+#include <random>
+
+std::random_device
+    rd;  // Will be used to obtain a seed for the random number engine
+std::mt19937 gen(rd());  // Standard mersenne_twister_engine seeded with rd()
+std::uniform_int_distribution<> distrib(0, 8);
+
 void treeNode::print() {
-  cout << number << "\n";
+  cout << "Move num: " << number << "\n";
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
       char output = '-';
@@ -62,20 +69,28 @@ bool treeNode::checkWin() {
     int consecutiveMovesX = 0;
     int consecutiveMovesY = 0;
     for (int j = 0; j < 3; j++) {
-      consecutiveMovesX += state[i * 3 + j];
-      consecutiveMovesY += state[j * 3 + i];
+      if (state[i * 3 + j] == 1) consecutiveMovesX++;
+      if (state[i * 3 + j] == 2) consecutiveMovesY++;
     }
-    if (consecutiveMovesX % 3 == 0 || consecutiveMovesY % 3 == 0) {
+    if (consecutiveMovesX % 3 == 0 && consecutiveMovesX != 0) {
+      win = true;
+      break;
+    }
+    if (consecutiveMovesY % 3 == 0 && consecutiveMovesY != 0) {
       win = true;
       break;
     }
   }
 
-  if (state[0] + state[4] + state[8] % 3 == 0) {
-    win = true;
+  if (state[0] + state[4] + state[8] != 0) {
+    if (state[0] + state[4] + state[8] % 3 == 0) {
+      win = true;
+    }
   }
-  if (state[2] + state[4] + state[6] % 3 == 0) {
-    win = true;
+  if (state[2] + state[4] + state[6] != 0) {
+    if (state[2] + state[4] + state[6] % 3 == 0) {
+      win = true;
+    }
   }
 
   return win;
@@ -142,4 +157,76 @@ void treeNode::generateZero(int num) {
       next[spot]->go = 2;
     }
   }
+}
+
+treeNode* treeNode::makeMove(int position) {
+  if (state[position]) return this;
+
+  if (go == 1) {
+    state[position] = 1;
+  }
+  if (go == 2) {
+    state[position] = 2;
+  }
+
+  if (checkWin()) return this;
+
+  children = 1;
+  next = new treeNode*[1];
+  next[0] = new treeNode;
+  std::copy(state, state + 9, next[0]->state);
+  next[0]->number = number + 1;
+
+  if (go == 1) {
+    next[0]->go = 2;
+  }
+  if (go == 2) {
+    next[0]->go = 1;
+  }
+
+  return next[0];
+}
+
+treeNode* treeNode::makeMovePC() {
+
+  bool canExit = false;
+  int pos = 0;
+  while (!canExit) {
+    pos = distrib(gen);
+
+    if (!state[pos]) canExit = true;
+  }
+
+  if (go == 1) {
+    state[pos] = 1;
+  }
+  if (go == 2) {
+    state[pos] = 2;
+  }
+
+  if (checkWin()) return this;
+
+  children = 1;
+  next = new treeNode*[1];
+  next[0] = new treeNode;
+  std::copy(state, state + 9, next[0]->state);
+  next[0]->number = number + 1;
+
+  if (go == 1) {
+    next[0]->go = 2;
+  }
+  if (go == 2) {
+    next[0]->go = 1;
+  }
+
+  return next[0];
+}
+
+treeNode* startGame(int side) {
+  treeNode* gameTree = new treeNode();
+
+  gameTree->go = side;
+  gameTree->number = 0;
+
+  return gameTree;
 }

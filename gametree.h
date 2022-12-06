@@ -19,4 +19,10 @@ struct treeNode {
 
   void generate(int num = 8);
   void generateZero(int num = 18);
+
+
+  treeNode* makeMove(int position);
+  treeNode* makeMovePC();
 };
+
+treeNode* startGame(int side);
