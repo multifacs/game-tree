@@ -1,4 +1,4 @@
-import * as React from 'react';
+// import * as React from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -24,7 +24,7 @@ function createData(scoreData: Array<Array<number>>) {
     return rows;
 }
 
-function PathTable({ paths }) {
+function PathTable({ paths } : { paths: Array<Array<number>>}) {
     const rows = createData(paths)
     console.log(rows)
     return (
@@ -44,13 +44,13 @@ function PathTable({ paths }) {
                         }}
                     >
                         <TableCell component="th" scope="row" sx={{
-                            color: "red",
+                            color: "#3f50b5",
                             fontWeight: "bold"
                         }}>
                             {rows[0].path}
                         </TableCell>
                         <TableCell align="right" sx={{
-                            color: "red",
+                            color: "#3f50b5",
                             fontWeight: "bold"
                         }}>{rows[0].score}</TableCell>
                     </TableRow>

@@ -1,10 +1,11 @@
 import { Button, Stack, TextField } from '@mui/material'
 import { useState } from 'react'
-import React from 'react'
+// import React from 'react'
 
-function GameInput(props) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function GameInput(props: any) {
     const [boardState, setBoardState] = useState([
-        "O", 1, "X", "X", 4, "X", 6, "O", "O"
+        0, 1, 2, 3, 4, 5, 6, 7, 8
     ]);
     const changeBoardVal = (idx: number, val: string) => {
         const newState = JSON.parse(JSON.stringify(boardState))
@@ -46,7 +47,7 @@ function GameInput(props) {
                     onChange={e => changeBoardVal(8, e.target.value)}
                     hiddenLabel variant="filled" size="small" placeholder='O' sx={{ input: { color: 'red' } }} />
             </div>
-            <Button onClick={e => props.onChange(boardState)}>Ввести</Button>
+            <Button onClick={() => props.onChange(boardState)}>Ввести</Button>
         </Stack>
     )
 }

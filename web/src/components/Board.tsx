@@ -1,5 +1,5 @@
-import { Box, Container } from '@mui/material';
-import React from 'react'
+import { Box } from '@mui/material';
+// import React from 'react'
 
 const getWinningRow = (cells: Array<number | string>) => {
     if ((cells[0] == cells[1] && cells[1] == cells[2])) return [0, 1, 2];
@@ -19,9 +19,9 @@ const getCellsContent = (cells: Array<number | string>, move: number) => {
     for (const [idx, item] of cells.entries()) {
         if (item == 'X' || item == 'O') {
             if (idx == move) {
-                content.push(<div style={{ fontWeight: "bold", color: "red"}} key={idx}>{item}</div>);
+                content.push(<div style={{ fontWeight: "bold", color: "red" }} key={idx}>{item}</div>);
             } else if (winningRow.includes(idx)) {
-                content.push(<div style={{ fontWeight: "bold", color: "blue"}} key={idx}>{item}</div>);
+                content.push(<div style={{ fontWeight: "bold", color: "blue" }} key={idx}>{item}</div>);
             } else {
                 content.push(<div key={idx}>{item}</div>);
             }
@@ -32,7 +32,9 @@ const getCellsContent = (cells: Array<number | string>, move: number) => {
     return content;
 };
 
-function Board({ board, num = 1, score = 10, move = -1, win = false }) {
+function Board({ board, num = 1, score = 10, move = -1, win = false }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    : { board: Array<number | string>, num: number, score: number, move: number, win: boolean, children?: any }) {
     let scoreColor = 'white'
     if (win) {
         if (score > 0) {
